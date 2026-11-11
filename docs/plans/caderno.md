@@ -2,7 +2,7 @@
 
 Escopo aceito. O produto está em `docs/ficha-tecnica.md`. O schema de `notebooks`, `notes` e `tasks` já está em `supabase/schema.sql`. Não reescreva essas tabelas, nem `profiles`, nem o trigger de signup.
 
-A entrega do aluno é type, service, hook e página. As três telas já existem em casca.
+A entrega do aluno é type, service, hook e página. As três telas já existem em casca. A ordem das fatias está em `docs/tasks.md`: uma branch por tarefa, sem juntar cadernos, notas e tarefas no mesmo PR.
 
 ## Tabelas
 

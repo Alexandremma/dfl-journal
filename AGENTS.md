@@ -22,12 +22,12 @@ página → hook (useQuery / useMutation) → service async → Supabase
 - O client do Supabase mora em `src/lib/supabase.ts`. Service é o único lugar que o importa, fora a auth: `useAuth` e `AuthProvider`. `RequireAuth` lê `isSupabaseConfigured` de `src/lib/env.ts`. O ESLint bloqueia o resto.
 - Página e componente importam hook. Não importam service nem o client.
 - Service sem React: `async`, mapper snake_case → camelCase, `throw new Error(...)` quando o Supabase devolver `error`.
-- O id do dono sai de `supabase.auth.getUser()` dentro do service.
+- O id do dono sai de `currentUserId()` em `src/services/current-user.ts`. O insert manda `user_id`. A página não envia esse id.
 - Mutation invalida as keys da seção Cache da ficha.
 - Toda lista trata `isPending`, `isError` (mensagem + "Tentar de novo") e empty.
 - Identificadores em inglês. Texto de interface em português.
 - A fatia ouro é o perfil: `profile.service.ts`, `useGetProfile`, `useUpdateProfile`, `queryKeys.profile`. Feature nova imita esses arquivos.
-- Domínio da prova: `notebooks`, `notes` e `tasks`. O schema já está em `supabase/schema.sql`. `profiles` já vem pronta. A entrega é service, hook e página. O plano aceito é `docs/plans/caderno.md`.
+- Domínio da prova: `notebooks`, `notes` e `tasks`. O schema já está em `supabase/schema.sql`. `profiles` já vem pronta. A entrega é service, hook e página, uma fatia por branch, na ordem de `docs/tasks.md`. O plano aceito é `docs/plans/caderno.md`.
 
 Fora de escopo: storage, realtime, edge functions, i18n, paginação infinita,
 update otimista, tipos gerados pelo CLI do Supabase, compartilhar caderno,
@@ -61,7 +61,7 @@ não houver nenhuma, pergunte o prefixo uma vez e reutilize.
 Entidade ou tabela nova, fora do caderno: grave `docs/plans/<slug>.md` (tabela, colunas, rotas,
 arquivos, query keys, mutations, fora de escopo) e pare. Implemente só depois
 de um aceite explícito do fellow: "aceito", "pode executar" ou "ok, executa".
-`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Não abra outro plano para eles.
+`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Não abra outro plano para eles. Implemente uma tarefa de `docs/tasks.md` por branch. Não antecipe a fatia seguinte.
 
 Se ele mudar o plano, regrave o arquivo e espere de novo. Correção dentro do
 que já foi aceito segue direto, sem plano novo.
@@ -92,7 +92,7 @@ Olhe o diff e corrija o que falhar. Só então escreva o PR.
 
 1. Caminho página → hook → service.
 2. Query key no factory. Path em `consts/routes.ts`.
-3. Service `async`, sem React, com `throw` no erro. Dono via `getUser()`.
+3. Service `async`, sem React, com `throw` no erro. Dono via `currentUserId()`. O insert manda `user_id`.
 4. `isPending` e `isError` com ação. Empty quando a lista vem vazia.
 5. Tipagem sem `any` desnecessário.
 6. Mudança dentro do que foi aceito.
@@ -112,7 +112,7 @@ e sugestões soltas.
 |---|---|
 | Abrir branch | `git-flow` |
 | Entidade nova, fora do caderno | `plan-feature` (para no aceite), depois `schema-rls` |
-| Caderno já aceito | service, hook e página. Não reescreva o schema |
+| Caderno já aceito | uma fatia de `docs/tasks.md`: service, hook e página dessa fatia. Não reescreva o schema |
 | Service, GET, mutation, página | `new-service`, `new-query-hook`, `new-mutation-hook`, `wire-page` |
 | Diff e PR | `review-diff`, `open-pr` |
 | Erro de check ou do Supabase | `debug` |

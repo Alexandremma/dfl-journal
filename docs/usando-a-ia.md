@@ -9,13 +9,18 @@ não preenche rubrica à mão.
 
 ## Pedidos que funcionam
 
+A ordem está em [tasks.md](./tasks.md). Uma frase pede uma tarefa. A primeira
+é sua: conectar o Supabase. A IA não cria o projeto, não vê a chave e não
+commita o `.env`.
+
 ```txt
-Liga a lista de cadernos, com favorito e a quantidade de notas.
+Liga a lista de cadernos, com criar, favoritar, filtro de favoritos e a quantidade de notas.
 ```
 
 O plano do caderno já está aceito em `docs/plans/caderno.md`. A IA implementa
-service, hook e página. Não reescreve o schema. Uma mudança de coluna, rota
-ou escopo faz a IA regravar o plano e esperar de novo.
+a fatia pedida: service, hook e página. Não reescreve o schema. Não antecipa
+a tarefa seguinte. Notas e tarefas ficam para o pedido delas. Uma mudança de
+coluna, rota ou escopo faz a IA regravar o plano e esperar de novo.
 
 ```txt
 O empty state da lista está sem texto.

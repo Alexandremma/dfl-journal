@@ -32,10 +32,12 @@ para o fellow preencher isto à mão.
 - Arquivo em `src/services/`, sem import de React.
 - Funções `async`. Mapper snake_case → camelCase no mesmo arquivo.
 - Erro do Supabase vira `throw new Error(...)`.
-- O dono vem de `supabase.auth.getUser()`. A função não recebe `userId` da página.
+- O dono vem de `currentUserId()` em `src/services/current-user.ts`. A função não recebe `userId` da página. O insert manda `user_id` com esse valor.
 - A query pede as colunas pelo nome. Sem `select('*')` solto quando o mapper já lista os campos.
+- Título de caderno, nota e tarefa passa por `trim`. Vazio vira `throw`. O service não grava `''`.
 - O GET de cadernos pede `notes(count)` na mesma query. O mapper expõe a quantidade. Não faz uma query por card.
 - O GET de notas pede `count: 'exact'`, ordena `updated_at` descendente e usa `range` com `pageSize` de `src/consts/pagination.ts`. `ilike` no título só quando a busca, sem espaços nas pontas, não é vazia.
+- O GET de tarefas ordena `created_at` ascendente: `order('created_at', { ascending: true })`.
 - O service não envia `updated_at`. A trigger do schema atualiza.
 
 ## Hook de leitura
@@ -43,7 +45,9 @@ para o fellow preencher isto à mão.
 - Antes de criar, lista o que já existe em `src/types/`, `src/services/`, `src/lib/queryKeys.ts` e `src/hooks/`.
 - A key sai de `queryKeys`. String solta não passa.
 - Key que já existe é estendida, não duplicada. A forma está na ficha, seção Cache.
-- `useQuery` com `queryKey` e `queryFn`. `useGetProfile` só busca com sessão (`enabled`).
+- `useQuery` com `queryKey` e `queryFn`. `useGetProfile` e `useGetNotebooks` só buscam com sessão (`enabled`).
+- `useGetNotes` e `useGetNote` usam `enabled: Boolean(notebookId)`. `useGetNote` também exige o id da nota.
+- `useGetTasks` usa `enabled: Boolean(noteId)`.
 - Cadernos: `queryKeys.notebooks.list(favoritesOnly)`.
 - Notas do caderno: `queryKeys.notes.byNotebook(notebookId, page, query)`.
 - Uma nota: `queryKeys.notes.byId(id)`.
@@ -64,6 +68,9 @@ para o fellow preencher isto à mão.
 - Path vem de `src/consts/routes.ts`.
 - Trata `isPending`, `isError` com "Tentar de novo" (`refetch`) e empty quando a lista vem vazia.
 - Texto da interface em português.
+- Título de caderno, nota e tarefa é obrigatório depois do `trim`. O botão de criar fica desabilitado quando o título, sem espaços nas pontas, está vazio.
+- Antes de `mutate`, a página chama `reset()` no hook de mutation. Enquanto `isPending`, o botão mostra "Salvando…" e fica desabilitado.
+- Apagar caderno ou nota pede confirmação antes do `mutate`. Cancelar não chama o service.
 - Filtro "só favoritos" na URL (`favoritos=1`). Página e busca das notas na URL (`page`, `q`). Mudar a busca volta para a página 1.
 - `page` ausente ou inválido mostra a página 1. Página além do fim mostra a última que ainda tem nota.
 - Apagar a última nota da página atual, se ela for maior que 1, volta para a página anterior.
@@ -74,7 +81,7 @@ para o fellow preencher isto à mão.
 
 1. Página → hook → service.
 2. Query key no factory, na forma da ficha. Path em `consts/routes.ts`.
-3. Service `async`, sem React, com `throw`. Dono via `getUser()`.
+3. Service `async`, sem React, com `throw`. Dono via `currentUserId()`. O insert manda `user_id`.
 4. `isPending`, `isError` com ação, empty na lista.
 5. Sem `any` desnecessário.
 6. Diff dentro do plano aceito. Sem coluna nova e sem reescrever o schema.

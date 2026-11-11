@@ -1,5 +1,6 @@
 import { getSupabase } from '@/lib/supabase';
 import type { Profile, Theme } from '@/types';
+import { currentUserId } from './current-user';
 
 type ProfileRow = {
   id: string;
@@ -16,17 +17,6 @@ export function toProfile(row: ProfileRow): Profile {
     name: row.name,
     theme: row.theme,
   };
-}
-
-async function currentUserId(): Promise<string> {
-  const { data, error } = await getSupabase().auth.getUser();
-  if (error) {
-    throw new Error(error.message);
-  }
-  if (!data.user) {
-    throw new Error('Sessão ausente.');
-  }
-  return data.user.id;
 }
 
 export async function getProfile(): Promise<Profile> {
@@ -47,10 +37,14 @@ export async function getProfile(): Promise<Profile> {
 }
 
 export async function updateProfile(input: { name: string; theme: Theme }): Promise<Profile> {
+  const name = input.name.trim();
+  if (!name) {
+    throw new Error('Informe o nome.');
+  }
   const userId = await currentUserId();
   const { data, error } = await getSupabase()
     .from('profiles')
-    .update({ name: input.name, theme: input.theme })
+    .update({ name, theme: input.theme })
     .eq('id', userId)
     .select('id, name, theme')
     .single();
