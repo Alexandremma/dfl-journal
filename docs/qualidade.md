@@ -1,26 +1,29 @@
 # Qualidade
 
 Lista canônica. Cada skill repete só a seção dela. Se uma skill e este arquivo
-divergirem, vale este arquivo.
+divergirem, vale este arquivo. O produto está em `docs/ficha-tecnica.md`. Se
+este arquivo e a ficha divergirem no que a tela faz, vale a ficha.
 
 Um item falho se corrige antes de seguir para a próxima skill. A IA não pede
 para o fellow preencher isto à mão.
 
 ## Plano
 
-- Um arquivo `docs/plans/<slug>.md` por feature. Entries e tasks ficam juntas.
+- Um arquivo `docs/plans/<slug>.md` por feature. O diário já está aceito em `docs/plans/caderno.md`: `notebooks`, `notes` e `tasks` juntas.
 - Tem tabelas e colunas com tipo, rotas, arquivos a criar, query keys, mutations e qual key cada mutation invalida.
 - Diz quem pode ler a linha (o dono, via `auth.uid()`).
 - Tem "fora de escopo" com pelo menos dois itens.
 - Não traz código.
-- Termina com "Aguardando aceite". A implementação não começa sem o aceite.
+- Plano novo termina com "Aguardando aceite". A implementação não começa sem o aceite. O plano do caderno já foi aceito: service, hook e página seguem direto.
 
 ## Schema
 
+- `notebooks`, `notes`, `tasks` e `profiles` já estão em `supabase/schema.sql`. Não se reescrevem. Não se inventa coluna.
 - SQL idempotente (`create table if not exists`, `drop policy if exists` antes de criar).
 - `enable row level security` na tabela nova.
 - Quatro policies: select, insert, update, delete. `USING` e `WITH CHECK` com `auth.uid()`.
-- `tasks.entry_id` referencia `entries` com `on delete cascade`, e a policy de task exige que a entry pai seja do mesmo usuário.
+- `notes.notebook_id` referencia `notebooks` com `on delete cascade`, e a policy de nota exige que o caderno pai seja do mesmo usuário.
+- `tasks.note_id` referencia `notes` com `on delete cascade`, e a policy de tarefa exige que a nota pai seja do mesmo usuário.
 - `profiles` e o trigger de signup não são reescritos.
 - Nenhum insert de usuário fixo.
 
@@ -31,21 +34,29 @@ para o fellow preencher isto à mão.
 - Erro do Supabase vira `throw new Error(...)`.
 - O dono vem de `supabase.auth.getUser()`. A função não recebe `userId` da página.
 - A query pede as colunas pelo nome. Sem `select('*')` solto quando o mapper já lista os campos.
+- O GET de cadernos pede `notes(count)` na mesma query. O mapper expõe a quantidade. Não faz uma query por card.
+- O GET de notas pede `count: 'exact'`, ordena `updated_at` descendente e usa `range` com `pageSize` de `src/consts/pagination.ts`. `ilike` no título só quando a busca, sem espaços nas pontas, não é vazia.
+- O service não envia `updated_at`. A trigger do schema atualiza.
 
 ## Hook de leitura
 
 - Antes de criar, lista o que já existe em `src/types/`, `src/services/`, `src/lib/queryKeys.ts` e `src/hooks/`.
 - A key sai de `queryKeys`. String solta não passa.
-- Key que já existe é estendida, não duplicada.
+- Key que já existe é estendida, não duplicada. A forma está na ficha, seção Cache.
 - `useQuery` com `queryKey` e `queryFn`. `useGetProfile` só busca com sessão (`enabled`).
+- Cadernos: `queryKeys.notebooks.list(favoritesOnly)`.
+- Notas do caderno: `queryKeys.notes.byNotebook(notebookId, page, query)`.
+- Uma nota: `queryKeys.notes.byId(id)`.
+- Tarefas: `queryKeys.tasks.byNote(noteId)`.
 - Entidade que não está num plano aceito: para e pergunta.
 
 ## Hook de mutation
 
-- `useMutation` chama o service e invalida a key do GET da mesma entidade.
-- Task invalida `queryKeys.tasks.byEntry(entryId)`.
-- Entry invalida `queryKeys.entries.all` e, no detalhe, `queryKeys.entries.byId(id)`.
-- Não cria uma key nova para "a versão atualizada".
+- `useMutation` chama o service e invalida a key do GET que a tela usa. Não cria uma key nova para "a versão atualizada".
+- Criar, renomear, apagar ou favoritar caderno invalida o prefixo `['notebooks']`.
+- Criar, editar, apagar ou favoritar nota invalida `['notes', { notebookId }]`. Editar, apagar ou favoritar também invalida `queryKeys.notes.byId(id)`.
+- Criar ou apagar nota invalida `['notebooks']`, porque a quantidade no card muda. Favoritar nota não invalida cadernos.
+- Criar ou marcar tarefa invalida `queryKeys.tasks.byNote(noteId)`.
 
 ## Página
 
@@ -53,23 +64,28 @@ para o fellow preencher isto à mão.
 - Path vem de `src/consts/routes.ts`.
 - Trata `isPending`, `isError` com "Tentar de novo" (`refetch`) e empty quando a lista vem vazia.
 - Texto da interface em português.
+- Filtro "só favoritos" na URL (`favoritos=1`). Página e busca das notas na URL (`page`, `q`). Mudar a busca volta para a página 1.
+- `page` ausente ou inválido mostra a página 1. Página além do fim mostra a última que ainda tem nota.
+- Apagar a última nota da página atual, se ela for maior que 1, volta para a página anterior.
+- Empty de lista vazia é diferente de empty de filtro ou busca sem resultado.
+- São `pageSize` notas por página, com anterior, próxima e "página 2 de N". Na ponta, o botão sem destino fica desabilitado.
 
 ## Diff, antes do PR
 
 1. Página → hook → service.
-2. Query key no factory. Path em `consts/routes.ts`.
+2. Query key no factory, na forma da ficha. Path em `consts/routes.ts`.
 3. Service `async`, sem React, com `throw`. Dono via `getUser()`.
 4. `isPending`, `isError` com ação, empty na lista.
 5. Sem `any` desnecessário.
-6. Diff dentro do plano aceito.
+6. Diff dentro do plano aceito. Sem coluna nova e sem reescrever o schema.
 7. `npm run check` limpo.
-8. RLS nas tabelas novas. `.env` fora do stage. Nenhuma `service_role`.
+8. `.env` fora do stage. Nenhuma `service_role`.
 
 ## Pull request
 
 - Título: `tipo(escopo): assunto no imperativo`, sem ponto final.
 - Corpo com Summary, What was done e How to verify.
-- How to verify marca só o que esta mudança cobre do roteiro: criar conta, criar entrada com tasks, refresh, Table Editor, outra conta com lista vazia, tema que sobrevive ao refresh.
+- How to verify marca só o que esta mudança cobre do roteiro da ficha: criar conta, favorito que sobrevive ao refresh, seis notas em duas páginas, busca, tarefa marcada, cascade ao apagar, Table Editor, outra conta com lista vazia, tema que sobrevive ao refresh.
 
 ## Git
 

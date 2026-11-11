@@ -3,9 +3,11 @@
 Lei deste repositório. Skills em `.cursor/skills/` detalham um passo. A lista
 canônica de qualidade está em `docs/qualidade.md`. Se uma skill e esse arquivo
 divergirem, vale `docs/qualidade.md`. Este arquivo manda na arquitetura e no
-fluxo quando os dois falarem com a skill.
+fluxo quando os dois falarem com a skill. O produto está em
+`docs/ficha-tecnica.md`. Se este arquivo e a ficha divergirem no que a tela
+faz, vale a ficha.
 
-O fellow pede o resultado como no dia a dia ("cria a lista de entradas",
+O fellow pede o resultado como no dia a dia ("cria a lista de cadernos",
 "revisa o PR", "continua do handoff"). Você executa branch, código,
 `npm run check` e o texto do PR. Ele lê o diff. Não peça para ele redigir
 plano, commit ou descrição de PR.
@@ -17,24 +19,26 @@ página → hook (useQuery / useMutation) → service async → Supabase
 ```
 
 - Tipos em `src/types/`. Consts em `src/consts/`. Query keys só em `src/lib/queryKeys.ts`. Paths só em `src/consts/routes.ts`.
-- O client do Supabase mora em `src/lib/supabase.ts`. Service é o único lugar que o importa.
+- O client do Supabase mora em `src/lib/supabase.ts`. Service é o único lugar que o importa, fora a auth: `useAuth` e `AuthProvider`. `RequireAuth` lê `isSupabaseConfigured` de `src/lib/env.ts`. O ESLint bloqueia o resto.
 - Página e componente importam hook. Não importam service nem o client.
 - Service sem React: `async`, mapper snake_case → camelCase, `throw new Error(...)` quando o Supabase devolver `error`.
 - O id do dono sai de `supabase.auth.getUser()` dentro do service.
-- Mutation invalida a query key do GET da mesma entidade.
+- Mutation invalida as keys da seção Cache da ficha.
 - Toda lista trata `isPending`, `isError` (mensagem + "Tentar de novo") e empty.
 - Identificadores em inglês. Texto de interface em português.
 - A fatia ouro é o perfil: `profile.service.ts`, `useGetProfile`, `useUpdateProfile`, `queryKeys.profile`. Feature nova imita esses arquivos.
-- Domínio da prova: `entries` e `tasks` (`entry_id`). `profiles` já vem pronta.
+- Domínio da prova: `notebooks`, `notes` e `tasks`. O schema já está em `supabase/schema.sql`. `profiles` já vem pronta. A entrega é service, hook e página. O plano aceito é `docs/plans/caderno.md`.
 
 Fora de escopo: storage, realtime, edge functions, i18n, paginação infinita,
-update otimista, tipos gerados pelo CLI do Supabase.
+update otimista, tipos gerados pelo CLI do Supabase, compartilhar caderno,
+anexos, tags, editor rico. A paginação da prova é numerada, com `pageSize` em
+`src/consts/pagination.ts`.
 
 ## Segurança
 
 - No Vite entra só `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`. A chave `service_role` não vai para o client, para o Git nem para o texto do PR.
 - `.env` fica de fora do commit. O exemplo versionado é `.env.example`.
-- Tabela nova nasce com `enable row level security` e policies de select, insert, update e delete. `USING` e `WITH CHECK` usam `auth.uid()`. Em `tasks`, a policy também exige que a entry pai seja do mesmo usuário. Apagar entry usa `on delete cascade` nas tasks.
+- `notebooks`, `notes` e `tasks` já nascem com `enable row level security` e policies de select, insert, update e delete. `USING` e `WITH CHECK` usam `auth.uid()`. Em `notes`, a policy também exige que o caderno pai seja do mesmo usuário. Em `tasks`, exige que a nota pai seja do mesmo usuário. Apagar caderno usa `on delete cascade` nas notas. Apagar nota usa `on delete cascade` nas tarefas. Não reescreva esse schema.
 - `profiles` nasce num trigger `after insert` em `auth.users`. Não invente seed com usuário fixo.
 - `supabase/schema.sql` é a fonte da tabela. SQL idempotente (`if not exists`).
 - Interface com o escape padrão do React, sem `dangerouslySetInnerHTML`.
@@ -43,8 +47,8 @@ update otimista, tipos gerados pelo CLI do Supabase.
 
 Você opera o git.
 
-1. `git pull` na `main` e abra `<usuario>/<tipo>/<descricao-curta>`. Tipos: `feat`, `fix`, `chore`, `refactor`, `docs`. Exemplo: `ana/feat/entries-list`.
-2. Uma branch, um objetivo. Commits no Conventional Commits, imperativo, sem ponto final: `feat(entries): add list query and service`.
+1. `git pull` na `main` e abra `<usuario>/<tipo>/<descricao-curta>`. Tipos: `feat`, `fix`, `chore`, `refactor`, `docs`. Exemplo: `ana/feat/notebooks-list`.
+2. Uma branch, um objetivo. Commits no Conventional Commits, imperativo, sem ponto final: `feat(notebooks): add list query and service`.
 3. Vários commits na mesma branch cabem (schema, service, página).
 4. Antes do PR, traga a `main` para a branch se ela tiver ficado para trás.
 5. A `main` não recebe commit direto nem force push.
@@ -54,10 +58,10 @@ não houver nenhuma, pergunte o prefixo uma vez e reutilize.
 
 ## Plano e aceite
 
-Entidade ou tabela nova: grave `docs/plans/<slug>.md` (tabela, colunas, rotas,
+Entidade ou tabela nova, fora do caderno: grave `docs/plans/<slug>.md` (tabela, colunas, rotas,
 arquivos, query keys, mutations, fora de escopo) e pare. Implemente só depois
 de um aceite explícito do fellow: "aceito", "pode executar" ou "ok, executa".
-Entries e tasks cabem no mesmo plano e no mesmo aceite.
+`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Não abra outro plano para eles.
 
 Se ele mudar o plano, regrave o arquivo e espere de novo. Correção dentro do
 que já foi aceito segue direto, sem plano novo.
@@ -95,17 +99,20 @@ Olhe o diff e corrija o que falhar. Só então escreva o PR.
 7. `npm run check` limpo.
 8. Tabela nova com RLS e `auth.uid()`. `.env` fora do stage. Nenhuma `service_role`.
 
-O corpo do PR leva Summary, What was done e How to verify (criar conta, criar
-uma entrada com tasks, refresh, ver no Table Editor, entrar com outra conta e
-ver a lista vazia). Você preenche. Quando pedirem review de um PR, responda
-com pontos fortes, ajustes antes do merge e sugestões soltas.
+O corpo do PR leva Summary, What was done e How to verify (o roteiro de
+`docs/ficha-tecnica.md`: criar conta, favorito que sobrevive ao refresh, seis
+notas em duas páginas, busca, tarefa marcada, cascade, Table Editor, outra
+conta com lista vazia, tema que sobrevive ao refresh). Você preenche. Quando
+pedirem review de um PR, responda com pontos fortes, ajustes antes do merge
+e sugestões soltas.
 
 ## Skills
 
 | Situação | Skill |
 |---|---|
 | Abrir branch | `git-flow` |
-| Entidade nova | `plan-feature` (para no aceite), depois `schema-rls` |
+| Entidade nova, fora do caderno | `plan-feature` (para no aceite), depois `schema-rls` |
+| Caderno já aceito | service, hook e página. Não reescreva o schema |
 | Service, GET, mutation, página | `new-service`, `new-query-hook`, `new-mutation-hook`, `wire-page` |
 | Diff e PR | `review-diff`, `open-pr` |
 | Erro de check ou do Supabase | `debug` |

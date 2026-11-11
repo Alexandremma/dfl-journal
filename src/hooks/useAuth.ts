@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '@/consts/routes';
 import { queryClient } from '@/lib/queryClient';
 import { queryKeys } from '@/lib/queryKeys';
-import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
+import { isSupabaseConfigured } from '@/lib/env';
+import { getSupabase } from '@/lib/supabase';
 
 export function useAuth() {
   const navigate = useNavigate();

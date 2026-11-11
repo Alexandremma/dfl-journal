@@ -10,12 +10,12 @@ não preenche rubrica à mão.
 ## Pedidos que funcionam
 
 ```txt
-Planeja a lista de entradas e as tasks dela.
+Liga a lista de cadernos, com favorito e a quantidade de notas.
 ```
 
-A IA grava `docs/plans/caderno.md` e para. Você responde "aceito" ou pede
-uma mudança. "Aceito" libera o código. Uma mudança no plano faz a IA regravar
-e esperar de novo.
+O plano do caderno já está aceito em `docs/plans/caderno.md`. A IA implementa
+service, hook e página. Não reescreve o schema. Uma mudança de coluna, rota
+ou escopo faz a IA regravar o plano e esperar de novo.
 
 ```txt
 O empty state da lista está sem texto.

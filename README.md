@@ -1,8 +1,9 @@
 # Caderno
 
-Template da prova de camada de dados da DevFellowship. O app já sobe com login,
-perfil e as rotas do diário em casca. Entries e tasks ficam para o fellow,
-depois do aceite do plano.
+Projeto final da disciplina. O app já sobe com login, perfil, schema e as três
+telas do diário em casca. O aluno liga cadernos, notas e tarefas no padrão do
+perfil. O produto está em `docs/ficha-tecnica.md`. O plano aceito está em
+`docs/plans/caderno.md`.
 
 ## Subir local
 
@@ -36,9 +37,11 @@ A chave `service_role` não entra no `.env` do Vite.
 
 - Login: criar conta, entrar e sair.
 - Perfil: `profile.service.ts`, `useGetProfile`, `useUpdateProfile`, `/settings`.
-- Cascas em `/` e `/entries/:id`.
-- `npm run check`: TypeScript, lint, teste do mapper e bloqueio de `service_role` no stage.
+- Schema de `notebooks`, `notes` e `tasks`, com RLS. Não reescreva essas tabelas.
+- Cascas em `/`, `/notebooks/:notebookId` e `/notebooks/:notebookId/notes/:noteId`.
+- `pageSize` igual a 5, em `src/consts/pagination.ts`.
+- `npm run check`: TypeScript, lint, teste do mapper e bloqueio de `service_role` no stage. O lint também bloqueia página e componente de importar service ou o client.
 
 ## Para a turma
 
-Peça o plano do caderno. A IA grava `docs/plans/caderno.md` e espera um "aceito" antes de codar. A régua está em `docs/qualidade.md`. O uso da IA está em `docs/usando-a-ia.md`.
+O schema já está aceito. Peça a lista de cadernos, as notas paginadas ou as tarefas da nota. A régua está em `docs/qualidade.md`. O uso da IA está em `docs/usando-a-ia.md`. A entrega está pronta quando o roteiro da ficha passa, inclusive explicar o que acontece ao favoritar uma nota.

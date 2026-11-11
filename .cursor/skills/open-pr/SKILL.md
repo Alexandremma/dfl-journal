@@ -10,7 +10,7 @@ description: >-
 
 1. `review-diff` já passou e `npm run check` está limpo. Se não passou, volte para lá.
 2. Traga a `main` para a branch se ela ficou para trás.
-3. Título: `tipo(escopo): assunto no imperativo`, sem ponto final. Exemplo: `feat(entries): add list query and service`.
+3. Título: `tipo(escopo): assunto no imperativo`, sem ponto final. Exemplo: `feat(notebooks): add list query and service`.
 4. Corpo no formato de `.github/PULL_REQUEST_TEMPLATE.md`. Marque em How to verify só o que esta mudança cobre.
 5. Você preenche Summary e What was done a partir do diff. Não peça redação ao fellow.
 6. A `main` não recebe push direto.

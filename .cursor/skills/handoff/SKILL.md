@@ -13,16 +13,16 @@ Regrave `docs/handoff.md`. Um arquivo só. No máximo 60 linhas. Sem código, se
 ```md
 # Handoff
 
-- **Branch:** ana/feat/entries-list
-- **Objetivo:** lista de entradas com criar e apagar
+- **Branch:** ana/feat/notebooks-list
+- **Objetivo:** lista de cadernos com criar, favoritar e a quantidade de notas
 - **Plano:** docs/plans/caderno.md — aceito
-- **Feito:** schema de entries; entries.service.ts
-- **Falta:** hooks; EntriesPage; review; PR
-- **Próximo passo:** criar useGetEntries, useCreateEntry e useDeleteEntry imitando o perfil
+- **Feito:** schema em supabase/schema.sql; cascas das três telas
+- **Falta:** notebooks.service.ts; hooks; ligar NotebooksPage; review; PR
+- **Próximo passo:** criar o service de cadernos imitando o perfil, com notes(count)
 - **Abrir só:**
+  - docs/ficha-tecnica.md
   - docs/plans/caderno.md
-  - src/services/entries.service.ts
-  - src/hooks/useGetProfile.ts
+  - src/services/profile.service.ts
   - src/lib/queryKeys.ts
 ```
 

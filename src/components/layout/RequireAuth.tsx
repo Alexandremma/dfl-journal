@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { routes } from '@/consts/routes';
-import { isSupabaseConfigured } from '@/lib/supabase';
+import { isSupabaseConfigured } from '@/lib/env';
 import { useSession } from '@/hooks';
 import { Spinner } from '@/components/ui/Spinner';
 

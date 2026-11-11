@@ -15,7 +15,7 @@ export function AppShell() {
             Caderno
           </Link>
           <nav className="flex items-center gap-4 text-sm">
-            <Link to={routes.home}>Entradas</Link>
+            <Link to={routes.home}>Cadernos</Link>
             <Link to={routes.settings}>Ajustes</Link>
             <button type="button" onClick={() => signOut()} className="text-stone-500 dark:text-stone-400">
               Sair
