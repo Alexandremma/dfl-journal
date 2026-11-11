@@ -28,6 +28,10 @@ Sugestões
 
 Ajuste antes do merge é só item da lista que falhou. Sugestão é o resto.
 
+## Neste repositório
+
+O check é `npm run check`. A régua que os oito itens conferem está em `docs/qualidade.md`. Não aproveite a revisão para puxar a próxima tarefa de `docs/tasks.md`.
+
 ## Qualidade
 
-Não diga que está pronto enquanto um item da seção Diff estiver falho, ou enquanto `npm run check` falhar.
+Não diga que está pronto enquanto um item da seção Diff estiver falho, ou enquanto `npm run check` falhar. Se a régua do repositório for mais específica que esta skill, vale a régua.

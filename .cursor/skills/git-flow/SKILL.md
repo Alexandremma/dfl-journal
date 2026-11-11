@@ -10,11 +10,15 @@ description: >-
 
 Abra a branch e pare. Não edite produto nesta skill.
 
-1. Confira `git status`. Mudança sem commit fica guardada ou commitada na branch atual antes do checkout. Não descarte trabalho do fellow.
+1. Confira `git status`. Mudança sem commit fica guardada ou commitada na branch atual antes do checkout. Não descarte trabalho de quem está usando.
 2. `git checkout main` e `git pull origin main`.
 3. O prefixo é o que já aparece nas branches deste clone (`ana/feat/...`). Se não houver nenhuma, pergunte o prefixo uma vez.
-4. Crie `<usuario>/<tipo>/<descricao-curta>`, em minúsculas e hífen. Tipos: `feat`, `fix`, `chore`, `refactor`, `docs`. Exemplo: `ana/feat/notebooks-list`.
-5. Uma branch, um objetivo.
+4. Crie `<usuario>/<tipo>/<descricao-curta>`, em minúsculas e hífen. Tipos: `feat`, `fix`, `chore`, `refactor`, `docs`.
+5. Uma branch, um objetivo. O objetivo é uma fatia do plano aceito, não o produto inteiro.
+
+## Neste repositório
+
+Uma branch é uma tarefa de `docs/tasks.md`. Exemplo: `ana/feat/notebooks-list`. Não abra uma branch que implemente cadernos, notas e tarefas juntos.
 
 ## Qualidade
 

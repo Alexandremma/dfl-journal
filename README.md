@@ -44,4 +44,4 @@ A chave `service_role` não entra no `.env` do Vite.
 
 ## Para a turma
 
-O schema já está aceito. Peça a lista de cadernos, as notas paginadas ou as tarefas da nota. A régua está em `docs/qualidade.md`. O uso da IA está em `docs/usando-a-ia.md`. A entrega está pronta quando o roteiro da ficha passa, inclusive explicar o que acontece ao favoritar uma nota.
+A ordem da entrega está em `docs/tasks.md`. A primeira tarefa é conectar o seu projeto no Supabase. O resto segue uma fatia por branch. A régua está em `docs/qualidade.md`. O uso da IA está em `docs/usando-a-ia.md`. A entrega está pronta quando o roteiro da ficha passa, inclusive explicar o que acontece ao favoritar uma nota.

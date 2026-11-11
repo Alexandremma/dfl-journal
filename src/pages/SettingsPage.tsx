@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useGetProfile, useUpdateProfile } from '@/hooks';
 import type { Theme } from '@/types';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -7,18 +7,18 @@ import { Spinner } from '@/components/ui/Spinner';
 export function SettingsPage() {
   const profile = useGetProfile();
   const update = useUpdateProfile();
-  const [name, setName] = useState('');
-  const [theme, setTheme] = useState<Theme>('light');
-
-  useEffect(() => {
-    if (!profile.data) return;
-    setName(profile.data.name);
-    setTheme(profile.data.theme);
-  }, [profile.data]);
+  const [name, setName] = useState<string | null>(null);
+  const [theme, setTheme] = useState<Theme | null>(null);
+  const shownName = name ?? profile.data?.name ?? '';
+  const shownTheme = theme ?? profile.data?.theme ?? 'light';
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    update.mutate({ name, theme });
+    const nextName = shownName.trim();
+    if (!nextName) return;
+    setName(nextName);
+    update.reset();
+    update.mutate({ name: nextName, theme: shownTheme });
   }
 
   if (profile.isPending) return <Spinner label="Carregando perfil…" />;
@@ -33,15 +33,16 @@ export function SettingsPage() {
         <label className="block text-sm">
           Nome
           <input
-            value={name}
+            value={shownName}
             onChange={(event) => setName(event.target.value)}
             className="mt-1 w-full rounded-md border border-stone-300 bg-white px-3 py-2 dark:border-stone-700 dark:bg-stone-900"
           />
+          {shownName.trim() === '' && <span className="mt-1 block text-red-700">Informe o nome.</span>}
         </label>
         <label className="block text-sm">
           Tema
           <select
-            value={theme}
+            value={shownTheme}
             onChange={(event) => setTheme(event.target.value as Theme)}
             className="mt-1 w-full rounded-md border border-stone-300 bg-white px-3 py-2 dark:border-stone-700 dark:bg-stone-900"
           >
@@ -53,10 +54,10 @@ export function SettingsPage() {
         {update.isSuccess && <p className="text-sm text-emerald-700">Salvo.</p>}
         <button
           type="submit"
-          disabled={update.isPending}
+          disabled={update.isPending || shownName.trim() === ''}
           className="rounded-md bg-stone-900 px-3 py-2 text-sm text-white disabled:opacity-60 dark:bg-stone-100 dark:text-stone-900"
         >
-          Salvar
+          {update.isPending ? 'Salvando…' : 'Salvar'}
         </button>
       </form>
     </section>

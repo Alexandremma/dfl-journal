@@ -1,26 +1,27 @@
 ---
 name: plan-feature
 description: >-
-  Escreve docs/plans/<slug>.md para uma feature ou tabela nova, fora do
-  caderno, e para até o fellow aceitar. O diário já está aceito em
-  docs/plans/caderno.md. Não implemente nesta skill.
+  Escreve docs/plans/<slug>.md para uma entidade ou tabela nova e para até o
+  aceite. Não implemente nesta skill. No caderno, notebooks, notes e tasks já
+  estão aceitos: não grave outro plano para eles.
 ---
 
 # Plano da feature
 
-O caderno (`notebooks`, `notes`, `tasks`) já está aceito. Se o pedido é lista, nota, tarefa, favorito ou paginação, não grave outro plano e não pare: use `new-service`, `new-query-hook`, `new-mutation-hook` ou `wire-page`. Não reescreva `supabase/schema.sql`.
-
-Para uma entidade que a ficha não descreve:
-
-1. Grave `docs/plans/<slug>.md` e pare. Sem código, sem branch de implementação, sem SQL aplicado.
-2. Leia `docs/plans/profile.md` e copie o formato, não o conteúdo.
-3. Escreva: tabelas e colunas com tipo, quem lê a linha, rotas, arquivos a criar, query keys, mutations e a key que cada uma invalida, fora de escopo com pelo menos dois itens.
-4. A última linha é `Aguardando aceite`.
+1. Se a entidade já está num plano aceito, não grave outro plano e não pare. Siga a skill da camada pedida.
+2. Fora de um plano aceito, grave `docs/plans/<slug>.md` e pare. Sem código, sem branch de implementação, sem SQL aplicado.
+3. Copie o formato de um plano que já existe no repositório, não o conteúdo.
+4. Escreva: tabelas e colunas com tipo, quem lê a linha, rotas, arquivos a criar, query keys, mutations e a key que cada uma invalida, fora de escopo com pelo menos dois itens.
+5. A última linha é `Aguardando aceite`.
 
 Implemente só depois de "aceito", "pode executar" ou "ok, executa". Se a resposta mudar coluna, rota ou escopo, regrave o plano e espere de novo.
 
 Correção dentro de um plano já aceito não usa esta skill.
 
+## Neste repositório
+
+`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Pedido de lista, nota, tarefa, favorito ou paginação segue `new-service`, `new-query-hook`, `new-mutation-hook` ou `wire-page`. Não reescreva `supabase/schema.sql`. O formato para copiar está em `docs/plans/profile.md`.
+
 ## Qualidade
 
-A seção Plano de `docs/qualidade.md` passa inteira antes de você dizer que o plano está pronto.
+A seção Plano de `docs/qualidade.md` passa inteira antes de você dizer que o plano está pronto. Se a régua do repositório for mais específica que esta skill, vale a régua.
