@@ -1,9 +1,9 @@
 ---
 name: new-mutation-hook
 description: >-
-  Cria useMutation que grava pelo service e invalida a query key do GET já
-  existente. Use para criar, editar, apagar entrada e para criar ou marcar
-  task. Não invente query key nova.
+  Cria useMutation que grava pelo service e invalida as query keys da seção
+  Cache da ficha. Use para criar, editar, apagar e favoritar caderno ou nota,
+  e para criar ou marcar tarefa. Não invente query key nova.
 ---
 
 # Hook de mutation
@@ -11,10 +11,14 @@ description: >-
 1. Leia o hook de GET da entidade e anote a key. A mutation invalida essa key, não uma nova.
 2. Imite `useUpdateProfile`.
 3. `useMutation` chama a função de escrita do service.
-4. No sucesso:
-   - task invalida `queryKeys.tasks.byEntry(entryId)`
-   - entry invalida `queryKeys.entries.all` e, quando o detalhe existe, `queryKeys.entries.byId(id)`
-5. Nomes: `useCreateEntry`, `useUpdateEntry`, `useDeleteEntry`, `useCreateTask`, `useToggleTask`.
+4. No sucesso, siga a seção Cache de `docs/ficha-tecnica.md`:
+   - caderno invalida o prefixo `['notebooks']`
+   - nota invalida `['notes', { notebookId }]`
+   - editar, apagar ou favoritar nota também invalida `queryKeys.notes.byId(id)`
+   - criar ou apagar nota também invalida `['notebooks']`
+   - favoritar nota não invalida cadernos
+   - tarefa invalida `queryKeys.tasks.byNote(noteId)`
+5. Nomes: `useCreateNotebook`, `useUpdateNotebook`, `useDeleteNotebook`, `useToggleNotebookFavorite`, `useCreateNote`, `useUpdateNote`, `useDeleteNote`, `useToggleNoteFavorite`, `useCreateTask`, `useToggleTask`.
 
 Não altere a página nesta skill.
 

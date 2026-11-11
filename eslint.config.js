@@ -22,4 +22,43 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/services/**', 'src/lib/**', 'src/hooks/useAuth.ts', 'src/providers/AuthProvider.tsx'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/lib/supabase', '@/lib/supabase/**'],
+              message:
+                'Só o service importa o client. A exceção de auth é useAuth e AuthProvider.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/pages/**/*.{ts,tsx}', 'src/components/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@/lib/supabase', '@/lib/supabase/**'],
+              message:
+                'Página e componente importam hook. O client fica no service. A exceção de auth é useAuth e AuthProvider.',
+            },
+            {
+              group: ['@/services', '@/services/**'],
+              message: 'Página e componente importam hook, não service.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 );
