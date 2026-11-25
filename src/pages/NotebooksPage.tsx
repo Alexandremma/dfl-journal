@@ -1,7 +1,13 @@
 import { FormEvent, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { routes } from '@/consts/routes';
-import { useCreateNotebook, useGetNotebooks, useToggleNotebookFavorite } from '@/hooks';
+import {
+  useCreateNotebook,
+  useDeleteNotebook,
+  useGetNotebooks,
+  useToggleNotebookFavorite,
+  useUpdateNotebook,
+} from '@/hooks';
 import type { Notebook } from '@/types';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -19,8 +25,13 @@ export function NotebooksPage() {
   const notebooks = useGetNotebooks(favoritesOnly);
   const create = useCreateNotebook();
   const toggleFavorite = useToggleNotebookFavorite();
+  const update = useUpdateNotebook();
+  const remove = useDeleteNotebook();
   const [title, setTitle] = useState('');
   const trimmedTitle = title.trim();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const trimmedEditTitle = editTitle.trim();
 
   function onCreate(event: FormEvent) {
     event.preventDefault();
@@ -32,6 +43,36 @@ export function NotebooksPage() {
   function onToggleFavorite(notebook: Notebook) {
     toggleFavorite.reset();
     toggleFavorite.mutate({ id: notebook.id, isFavorite: !notebook.isFavorite });
+  }
+
+  function onStartEdit(notebook: Notebook) {
+    update.reset();
+    setEditingId(notebook.id);
+    setEditTitle(notebook.title);
+  }
+
+  function onCancelEdit() {
+    update.reset();
+    setEditingId(null);
+  }
+
+  function onRename(event: FormEvent, notebook: Notebook) {
+    event.preventDefault();
+    if (!trimmedEditTitle) return;
+    update.reset();
+    update.mutate(
+      { id: notebook.id, title: trimmedEditTitle },
+      { onSuccess: () => setEditingId(null) },
+    );
+  }
+
+  function onDelete(notebook: Notebook) {
+    const confirmed = window.confirm(
+      `Apagar o caderno "${notebook.title}"? As notas dele também serão apagadas.`,
+    );
+    if (!confirmed) return;
+    remove.reset();
+    remove.mutate({ id: notebook.id });
   }
 
   function onToggleFilter() {
@@ -67,6 +108,51 @@ export function NotebooksPage() {
         {notebooks.data.map((notebook) => {
           const isSaving =
             toggleFavorite.isPending && toggleFavorite.variables?.id === notebook.id;
+          const isDeleting = remove.isPending && remove.variables?.id === notebook.id;
+
+          if (editingId === notebook.id) {
+            return (
+              <li
+                key={notebook.id}
+                className="rounded-lg border border-stone-200 p-4 dark:border-stone-800"
+              >
+                <form className="space-y-2" onSubmit={(event) => onRename(event, notebook)}>
+                  <label className="sr-only" htmlFor={`rename-${notebook.id}`}>
+                    Novo título do caderno
+                  </label>
+                  <input
+                    id={`rename-${notebook.id}`}
+                    value={editTitle}
+                    onChange={(event) => setEditTitle(event.target.value)}
+                    autoFocus
+                    className="w-full rounded-md border border-stone-300 bg-white px-3 py-2 text-sm dark:border-stone-700 dark:bg-stone-900"
+                  />
+                  {!trimmedEditTitle && (
+                    <p className="text-sm text-red-700">Informe o título do caderno.</p>
+                  )}
+                  {update.isError && <p className="text-sm text-red-700">{update.error.message}</p>}
+                  <div className="flex gap-2">
+                    <button
+                      type="submit"
+                      disabled={update.isPending || !trimmedEditTitle}
+                      className="rounded-md bg-stone-900 px-3 py-1.5 text-sm text-white disabled:opacity-60 dark:bg-stone-100 dark:text-stone-900"
+                    >
+                      {update.isPending ? 'Salvando…' : 'Salvar'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={onCancelEdit}
+                      disabled={update.isPending}
+                      className="rounded-md border border-stone-300 px-3 py-1.5 text-sm disabled:opacity-60 dark:border-stone-700"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </li>
+            );
+          }
+
           return (
             <li
               key={notebook.id}
@@ -78,15 +164,35 @@ export function NotebooksPage() {
                   {notesLabel(notebook.notesCount)}
                 </p>
               </Link>
-              <button
-                type="button"
-                onClick={() => onToggleFavorite(notebook)}
-                disabled={toggleFavorite.isPending}
-                aria-pressed={notebook.isFavorite}
-                className="shrink-0 rounded-md border border-stone-300 px-2 py-1 text-sm disabled:opacity-60 dark:border-stone-700"
-              >
-                {isSaving ? 'Salvando…' : notebook.isFavorite ? '★ Favorito' : '☆ Favoritar'}
-              </button>
+              <div className="flex shrink-0 flex-col items-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => onToggleFavorite(notebook)}
+                  disabled={toggleFavorite.isPending}
+                  aria-pressed={notebook.isFavorite}
+                  className="rounded-md border border-stone-300 px-2 py-1 text-sm disabled:opacity-60 dark:border-stone-700"
+                >
+                  {isSaving ? 'Salvando…' : notebook.isFavorite ? '★ Favorito' : '☆ Favoritar'}
+                </button>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onStartEdit(notebook)}
+                    disabled={isDeleting}
+                    className="text-sm text-stone-600 underline disabled:opacity-60 dark:text-stone-300"
+                  >
+                    Renomear
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onDelete(notebook)}
+                    disabled={remove.isPending}
+                    className="text-sm text-red-700 underline disabled:opacity-60"
+                  >
+                    {isDeleting ? 'Apagando…' : 'Apagar'}
+                  </button>
+                </div>
+              </div>
             </li>
           );
         })}
@@ -127,6 +233,7 @@ export function NotebooksPage() {
       {toggleFavorite.isError && (
         <p className="mt-2 text-sm text-red-700">{toggleFavorite.error.message}</p>
       )}
+      {remove.isError && <p className="mt-2 text-sm text-red-700">{remove.error.message}</p>}
 
       <div className="mt-6">{renderList()}</div>
     </section>
