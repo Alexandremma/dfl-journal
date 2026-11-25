@@ -75,3 +75,29 @@ export async function setNotebookFavorite(input: {
   }
   return toNotebook(data);
 }
+
+export async function updateNotebook(input: { id: string; title: string }): Promise<Notebook> {
+  const title = input.title.trim();
+  if (!title) {
+    throw new Error('Informe o título do caderno.');
+  }
+  const { data, error } = await getSupabase()
+    .from('notebooks')
+    .update({ title })
+    .eq('id', input.id)
+    .select(notebookColumns)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return toNotebook(data);
+}
+
+export async function deleteNotebook(input: { id: string }): Promise<void> {
+  const { error } = await getSupabase().from('notebooks').delete().eq('id', input.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}

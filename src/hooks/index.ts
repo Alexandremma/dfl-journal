@@ -5,3 +5,5 @@ export { useUpdateProfile } from './useUpdateProfile';
 export { useGetNotebooks } from './useGetNotebooks';
 export { useCreateNotebook } from './useCreateNotebook';
 export { useToggleNotebookFavorite } from './useToggleNotebookFavorite';
+export { useUpdateNotebook } from './useUpdateNotebook';
+export { useDeleteNotebook } from './useDeleteNotebook';
