@@ -2,3 +2,6 @@ export { useSession } from './useSession';
 export { useAuth } from './useAuth';
 export { useGetProfile } from './useGetProfile';
 export { useUpdateProfile } from './useUpdateProfile';
+export { useGetNotebooks } from './useGetNotebooks';
+export { useCreateNotebook } from './useCreateNotebook';
+export { useToggleNotebookFavorite } from './useToggleNotebookFavorite';
