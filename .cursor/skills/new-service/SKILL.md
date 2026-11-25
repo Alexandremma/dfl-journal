@@ -30,7 +30,8 @@ Não crie hook, página nem query key nesta skill. A key entra em `new-query-hoo
 
 - Plano aceito: `docs/plans/caderno.md`. Não edite `supabase/schema.sql`.
 - Ouro: `src/services/profile.service.ts` e `src/services/current-user.ts`. O insert manda `user_id`.
-- Contagem de notas, `range`, `ilike` e a ordem de `created_at` estão na seção Service de `docs/qualidade.md`. A fatia desta branch está em `docs/tasks.md`.
+- Contagem de notas, `range`, `ilike` e a ordem de `created_at` estão na seção Service de `docs/qualidade.md`.
+- Implemente só as funções do item "Passos" da tarefa atual em `docs/tasks.md`. Função de "Fora desta branch" não entra neste arquivo.
 
 ## Qualidade
 

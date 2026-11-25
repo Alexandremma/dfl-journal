@@ -47,11 +47,11 @@ anexos, tags, editor rico. A paginação da prova é numerada, com `pageSize` em
 
 Você opera o git.
 
-1. `git pull` na `main` e abra `<usuario>/<tipo>/<descricao-curta>`. Tipos: `feat`, `fix`, `chore`, `refactor`, `docs`. Exemplo: `ana/feat/notebooks-list`.
-2. Uma branch, um objetivo. Commits no Conventional Commits, imperativo, sem ponto final: `feat(notebooks): add list query and service`.
-3. Vários commits na mesma branch cabem (schema, service, página).
-4. Antes do PR, traga a `main` para a branch se ela tiver ficado para trás.
-5. A `main` não recebe commit direto nem force push.
+1. `git pull` na `main` do repositório do aluno e abra `<usuario>/<tipo>/<descricao-curta>`. Tipos: `feat`, `fix`, `chore`, `refactor`, `docs`. Exemplo: `ana/feat/notebooks-list`.
+2. Uma branch, uma tarefa de `docs/tasks.md`. Commits no Conventional Commits, imperativo, sem ponto final: `feat(notebooks): add list query and service`.
+3. Vários commits na mesma branch cabem (service, hook, página). O diff fica nos arquivos de "Nesta branch".
+4. Antes do PR, traga a `main` do aluno para a branch se ela tiver ficado para trás.
+5. A `main` não recebe commit direto nem force push. O pull request abre no repositório do aluno. `Alexandremma/dfl-journal` não é o destino.
 
 O prefixo `<usuario>` é o que já aparece nas branches desse clone. Se ainda
 não houver nenhuma, pergunte o prefixo uma vez e reutilize.
@@ -61,7 +61,7 @@ não houver nenhuma, pergunte o prefixo uma vez e reutilize.
 Entidade ou tabela nova, fora do caderno: grave `docs/plans/<slug>.md` (tabela, colunas, rotas,
 arquivos, query keys, mutations, fora de escopo) e pare. Implemente só depois
 de um aceite explícito do fellow: "aceito", "pode executar" ou "ok, executa".
-`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Não abra outro plano para eles. Implemente uma tarefa de `docs/tasks.md` por branch. Não antecipe a fatia seguinte.
+`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Não abra outro plano para eles. Implemente uma tarefa de `docs/tasks.md` por branch, só os "Passos" dela. Não antecipe o que está em "Fora desta branch".
 
 Se ele mudar o plano, regrave o arquivo e espere de novo. Correção dentro do
 que já foi aceito segue direto, sem plano novo.

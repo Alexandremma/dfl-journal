@@ -20,7 +20,7 @@ Correção dentro de um plano já aceito não usa esta skill.
 
 ## Neste repositório
 
-`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Pedido de lista, nota, tarefa, favorito ou paginação segue `new-service`, `new-query-hook`, `new-mutation-hook` ou `wire-page`. Não reescreva `supabase/schema.sql`. O formato para copiar está em `docs/plans/profile.md`.
+`notebooks`, `notes` e `tasks` já estão aceitos em `docs/plans/caderno.md`. Um pedido que já é uma tarefa de `docs/tasks.md` não abre plano novo: siga os "Passos" dessa tarefa. Não reescreva `supabase/schema.sql`. O formato para copiar está em `docs/plans/profile.md`.
 
 ## Qualidade
 

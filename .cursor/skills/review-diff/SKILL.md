@@ -30,7 +30,7 @@ Ajuste antes do merge é só item da lista que falhou. Sugestão é o resto.
 
 ## Neste repositório
 
-O check é `npm run check`. A régua que os oito itens conferem está em `docs/qualidade.md`. Não aproveite a revisão para puxar a próxima tarefa de `docs/tasks.md`.
+O check é `npm run check`. A régua que os oito itens conferem está em `docs/qualidade.md`. Compare o diff com "Nesta branch" e "Fora desta branch" da tarefa atual em `docs/tasks.md`. Arquivo da tarefa seguinte é ajuste antes do merge.
 
 ## Qualidade
 

@@ -6,7 +6,7 @@
 
 ## How to verify
 
-Marque só o que esta mudança cobre. O roteiro inteiro está em `docs/ficha-tecnica.md`.
+Marque os itens de "Conferir" da tarefa em `docs/tasks.md`. Deixe desmarcado o que é de outra tarefa. O roteiro inteiro está em `docs/ficha-tecnica.md`.
 
 - [ ] Criar conta e entrar
 - [ ] Favoritar um caderno, ligar "só favoritos" e ver o filtro depois do refresh

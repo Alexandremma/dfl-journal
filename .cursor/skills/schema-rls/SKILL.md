@@ -24,7 +24,7 @@ Quem for usar o projeto cola o arquivo no SQL Editor. O commit leva o SQL.
 
 ## Neste repositório
 
-`notebooks`, `notes`, `tasks` e `profiles` já estão em `supabase/schema.sql`, com RLS, cascade e a trigger de `updated_at`. Não edite esse arquivo para o caderno. Não crie outra migration. Não altere `profiles` nem o trigger em `auth.users`. O aluno cola o arquivo no SQL Editor do projeto dele.
+`notebooks`, `notes`, `tasks` e `profiles` já estão em `supabase/schema.sql`, com RLS, cascade e a trigger de `updated_at`. Não edite esse arquivo para o caderno. Não crie outra migration. Não altere `profiles` nem o trigger em `auth.users`. A tarefa 1 de `docs/tasks.md` cola o arquivo no SQL Editor e não faz commit desse SQL.
 
 ## Qualidade
 

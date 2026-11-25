@@ -22,7 +22,7 @@ Não altere a página nesta skill. `reset()` antes do `mutate` fica em `wire-pag
 
 ## Neste repositório
 
-O ouro é `useUpdateProfile`. A lista do que cada mutation invalida está na seção Cache de `docs/ficha-tecnica.md`. Os nomes dos hooks estão em `docs/plans/caderno.md`. A fatia desta branch está em `docs/tasks.md`.
+O ouro é `useUpdateProfile`. A lista do que cada mutation invalida está na seção Cache de `docs/ficha-tecnica.md`. Os nomes dos hooks estão em `docs/plans/caderno.md`. Crie só as mutations da tarefa atual em `docs/tasks.md`, com a invalidação descrita nos "Passos" dessa tarefa.
 
 ## Qualidade
 
