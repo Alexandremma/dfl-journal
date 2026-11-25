@@ -27,6 +27,7 @@ O hook ouro é `useGetProfile`. As keys e o `enabled` de cada leitura estão na 
 - `useGetNotebooks` usa a sessão
 - `useGetNotes` e `useGetNote` usam `enabled: Boolean(notebookId)`; `useGetNote` também exige o id da nota
 - `useGetTasks` usa `enabled: Boolean(noteId)`
+- Crie só as keys e os hooks de leitura da tarefa atual em `docs/tasks.md`.
 
 ## Qualidade
 

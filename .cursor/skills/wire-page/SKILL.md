@@ -29,7 +29,7 @@ Não busque dado novo aqui. Se falta um GET ou uma mutation, pare e use a skill 
 - Página ouro: `SettingsPage`. Componentes em `src/components/ui`. Rotas em `src/consts/routes.ts`. Tamanho da página em `src/consts/pagination.ts`.
 - O botão de espera mostra "Salvando…".
 - Filtro `favoritos=1` na home. `page` e `q` nas notas. Confirmação ao apagar caderno ou nota.
-- A fatia desta branch está em `docs/tasks.md`.
+- Ligue só a página da tarefa atual em `docs/tasks.md`. Botão, filtro ou formulário de "Fora desta branch" não entra.
 
 ## Qualidade
 

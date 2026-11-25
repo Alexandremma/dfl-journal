@@ -36,7 +36,7 @@ Faz só o próximo passo.
 
 ## Neste repositório
 
-O plano do diário é `docs/plans/caderno.md`, aceito. A fatia atual sai de `docs/tasks.md`. Exemplo de objetivo: "lista de cadernos com criar, favoritar e a quantidade de notas". Exemplo de próximo passo: "criar o service de cadernos imitando o perfil".
+O plano do diário é `docs/plans/caderno.md`, aceito. A fatia atual sai de `docs/tasks.md`. O próximo passo é o próximo item de "Passos" dessa tarefa, ou a tarefa seguinte se a atual já está na `main` do aluno. Exemplo de objetivo: "lista de cadernos com criar, favoritar e a quantidade de notas". Exemplo de próximo passo: "criar o service de cadernos imitando o perfil".
 
 ## Qualidade
 

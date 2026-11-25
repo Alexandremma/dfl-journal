@@ -18,7 +18,7 @@ Abra a branch e pare. Não edite produto nesta skill.
 
 ## Neste repositório
 
-Uma branch é uma tarefa de `docs/tasks.md`. Exemplo: `ana/feat/notebooks-list`. Não abra uma branch que implemente cadernos, notas e tarefas juntos.
+Uma branch é uma tarefa de `docs/tasks.md`. Exemplo: `ana/feat/notebooks-list`. A branch sai da `main` do repositório do aluno, depois que a tarefa anterior já está nessa `main`. O pull request abre nesse mesmo repositório. Se o destino sugerido for `Alexandremma/dfl-journal`, troque para o repositório do aluno. Os arquivos permitidos estão em "Nesta branch"; os de "Fora desta branch" não entram.
 
 ## Qualidade
 

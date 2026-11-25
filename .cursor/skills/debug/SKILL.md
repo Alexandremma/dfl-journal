@@ -15,7 +15,7 @@ description: >-
 
 ## Neste repositório
 
-O check é `npm run check`. Erro de policy do Supabase se investiga no SQL e no `user_id` gravado pelo service. Não reescreva `supabase/schema.sql` para contornar o erro do caderno.
+O check é `npm run check`. Erro de policy do Supabase se investiga no SQL e no `user_id` gravado pelo service. Não reescreva `supabase/schema.sql` para contornar o erro do caderno. A correção fica na tarefa atual de `docs/tasks.md`. Não implemente a tarefa seguinte para destravar o erro.
 
 ## Qualidade
 

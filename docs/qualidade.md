@@ -98,6 +98,8 @@ para o fellow preencher isto à mão.
 
 - `git pull` na `main` antes de abrir `<usuario>/<tipo>/<descricao-curta>`.
 - Uma branch, um objetivo. Commit Conventional Commits.
+- O pull request abre no repositório do aluno. A base é a `main` dele.
+- O diff contém os arquivos de "Nesta branch" da tarefa em `docs/tasks.md`.
 - `main` sem commit direto e sem force push.
 - `.env` não entra no stage.
 

@@ -17,7 +17,7 @@ description: >-
 
 ## Neste repositório
 
-O template é `.github/PULL_REQUEST_TEMPLATE.md`. O check é `npm run check`. Exemplo de título: `feat(notebooks): add list query and service`. O roteiro de verificação está em `docs/ficha-tecnica.md`; marque só a fatia desta branch, descrita em `docs/tasks.md`.
+O template é `.github/PULL_REQUEST_TEMPLATE.md`. O check é `npm run check`. Exemplo de título: `feat(notebooks): add list query and service`. O pull request abre no repositório do aluno, com base na `main` dele. O diff contém os arquivos de "Nesta branch" em `docs/tasks.md`. Em How to verify, marque os itens de "Conferir" dessa tarefa.
 
 ## Qualidade
 
